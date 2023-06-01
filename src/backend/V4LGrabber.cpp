@@ -50,6 +50,13 @@ int V4LGrabber::read_frame(CImageData data)
     unsigned char *ptr;
     int sz;
     data.GetJPEGData(ptr, sz);
+    OATPP_LOGD(TAG, "%s - Frame size: %d", m_devname, sz);
+    std::string first_ten = "";
+    for (int i = 0; i < 10 && i < sz; i++)
+    {
+        first_ten += std::to_string(ptr[i]) + " ";
+    }
+    OATPP_LOGD(TAG, "%s - First 10 bytes: %s", m_devname, first_ten.c_str());
     m_imagecb(m_userdata, ptr, sz);
     return 0;
 }
