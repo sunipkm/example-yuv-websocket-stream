@@ -24,6 +24,8 @@
 
                 ws.onmessage = function (evt) {
                     const received_msg = new Uint8Array(evt.data);
+                    console.info("Received: " + received_msg.length + " bytes")
+                    console.info(received_msg.slice(0, 10));
 
                     if(received_msg.length > 0 && stream === true) {
                         loadingMessage.hidden = true;
