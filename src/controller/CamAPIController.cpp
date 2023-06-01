@@ -21,7 +21,7 @@ int apiv0::CamAPIController::v4lInit()
 
   if (V4LGrabber::testDevice("ZWO ASI") == 0)
   {
-    device[10] = '0';
+    
   }
   else
   {
@@ -29,7 +29,7 @@ int apiv0::CamAPIController::v4lInit()
     return -1;
   }
 
-  m_grabber = std::make_shared<V4LGrabber>(device, &CamAPIController::handle_frame, m_imageReceivers.get());
+  m_grabber = std::make_shared<V4LGrabber>("ZWO ASI", &CamAPIController::handle_frame, m_imageReceivers.get());
   m_imagewsConnectionHandler = oatpp::websocket::ConnectionHandler::createShared();
   m_imagewsConnectionHandler->setSocketInstanceListener(std::make_shared<ImageWSInstanceListener>(m_imageReceivers, m_grabber));
   m_v4linit = true;
