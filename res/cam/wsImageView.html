@@ -52,6 +52,7 @@
                             ctx.canvas.height = ihei*scale;
                             ctx.drawImage(img, 0, 0, iwid*scale, ihei*scale); 
                         };
+                        ws.send("Received: " + received_msg.length + " bytes");
                     }
                 };
 
