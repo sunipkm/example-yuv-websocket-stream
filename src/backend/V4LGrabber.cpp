@@ -66,7 +66,7 @@ void V4LGrabber::mainloop(V4LGrabber *parent) // thread function
 
     OATPP_LOGD(TAG, "%s - Created mainloop", parent->m_devname);
     static float exposure = 0.1; // 100 ms
-    parent->m_camera->SetGainRaw(20);
+    parent->m_camera->SetGainRaw(200);
     while (parent->m_capturing)
     {
         // do the capture here
