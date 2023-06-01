@@ -30,9 +30,10 @@
                     if(received_msg.length > 0 && stream === true) {
                         loadingMessage.hidden = true;
                         
-                        var b64encoded = btoa(String.fromCharCode.apply(null, received_msg.slice(0, 10)));
+                        var b64encoded = btoa(String.fromCharCode.apply(null, received_msg));
                         console.info(b64encoded);
                         var datajpg = "data:image/jpg;base64," + b64encoded;
+                        console.info(datajpg);
                         c.src = datajpg;
                         // const imgData = ctx.createImageData(640, 480);
                         // const grayScale = new Uint8Array(640*480);
