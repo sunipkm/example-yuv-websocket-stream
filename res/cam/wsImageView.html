@@ -40,7 +40,7 @@
                         console.info(b64encoded);
                         var datajpg = "data:image/jpg;base64," + b64encoded;
                         console.info(datajpg);
-                        var img = new Image();
+                        var img = document.getElementById("img");
                         img.src = datajpg;
                         img.onload = () => { ctx.drawImage(img, 0, 0); };
                         // const imgData = ctx.createImageData(640, 480);
@@ -102,6 +102,7 @@
 <body>
     <div id="loadingMessage">Loading video ...</div>
     <canvas id="streamdata" width="640" height="480">
+        <img id="img" src="" />
         Your browser does not support the HTML5 canvas tag.
     </canvas>
     <script>
