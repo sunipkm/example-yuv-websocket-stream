@@ -37,12 +37,12 @@
                         for (var i = 0; i < len; i++) {
                             b64encoded += String.fromCharCode(received_msg[i]);
                         }
-                        console.info(b64encoded);
+                        // console.info(b64encoded);
                         var datajpg = "data:image/jpg;base64," + b64encoded;
-                        console.info(datajpg);
+                        // console.info(datajpg);
                         var img = document.getElementById("img");
                         img.src = datajpg;
-                        img.onload = () => { ctx.drawImage(img, 0, 0); };
+                        // img.onload = () => { ctx.drawImage(img, 0, 0); };
                         // const imgData = ctx.createImageData(640, 480);
                         // const grayScale = new Uint8Array(640*480);
                         // let i, j, g;
