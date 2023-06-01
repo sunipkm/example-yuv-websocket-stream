@@ -8,7 +8,7 @@
 
             const loadingMessage = document.getElementById("loadingMessage");
             const c = document.getElementById("streamdata");
-            const ctx = c.getContext("2d");
+            // const ctx = c.getContext("2d");
 
             if ("WebSocket" in window) {
                 let proto = "wss";
@@ -32,7 +32,7 @@
 
                         var b64encoded = btoa(String.fromCharCode.apply(null, received_msg));
                         var datajpg = "data:image/jpg;base64," + b64encoded;
-                        document.getElementById("streamdata").src = datajpg;
+                        c.src = datajpg;
                         // const imgData = ctx.createImageData(640, 480);
                         // const grayScale = new Uint8Array(640*480);
                         // let i, j, g;
