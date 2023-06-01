@@ -26,8 +26,7 @@
 
                 ws.onmessage = function (evt) {
                     const received_msg = new Uint8Array(evt.data);
-                    console.info("Received: " + received_msg.length + " bytes")
-                    console.info(received_msg);
+                    console.info("Received: " + received_msg.length + " bytes -> " + received_msg.slice(0, 10))
 
                     if (received_msg.length > 0 && stream === true) {
                         loadingMessage.hidden = true;
@@ -39,7 +38,7 @@
                         }
                         // console.info(b64encoded);
                         var datajpg = "data:image/jpg;base64," + btoa(b64encoded);
-                        // console.info(datajpg);
+                        console.info(datajpg);
                         const img = new Image();
                         img.src = datajpg;
                         // img.onload = () => { ctx.drawImage(img, 0, 0); };
