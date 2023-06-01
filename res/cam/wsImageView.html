@@ -52,28 +52,6 @@
                             ctx.canvas.height = ihei*scale;
                             ctx.drawImage(img, 0, 0, iwid*scale, ihei*scale); 
                         };
-                        // img.onload = () => { ctx.drawImage(img, 0, 0); };
-                        // const imgData = ctx.createImageData(640, 480);
-                        // const grayScale = new Uint8Array(640*480);
-                        // let i, j, g;
-                        // for (i = 0, j = 0, g = 0; i < imgData.data.length && j < received_msg.length; i += 8, j += 4, g+= 2) {
-                        //     const y1  = received_msg[j  ];
-                        //     const u   = received_msg[j+1];
-                        //     const y2  = received_msg[j+2];
-                        //     const v   = received_msg[j+3];
-
-                        //     grayScale[g]   = y1;
-                        //     grayScale[g+1] = y2;
-                        //     imgData.data[i    ] = Math.min(255, Math.max(0, Math.floor(y1+1.4075*(v-128))));
-                        //     imgData.data[i + 1] = Math.min(255, Math.max(0, Math.floor(y1-0.3455*(u-128)-(0.7169*(v-128)))));
-                        //     imgData.data[i + 2] = Math.min(255, Math.max(0, Math.floor(y1+1.7790*(u-128))));
-                        //     imgData.data[i + 3] = 255;
-                        //     imgData.data[i + 4] = Math.min(255, Math.max(0, Math.floor(y2+1.4075*(v-128))));
-                        //     imgData.data[i + 5] = Math.min(255, Math.max(0, Math.floor(y2-0.3455*(u-128)-(0.7169*(v-128)))));
-                        //     imgData.data[i + 6] = Math.min(255, Math.max(0, Math.floor(y2+1.7790*(u-128))));
-                        //     imgData.data[i + 7] = 255;
-                        // }
-                        // ctx.drawImage(img, 0, 0);
                     }
                 };
 
@@ -111,7 +89,7 @@
 
 <body>
     <div id="loadingMessage">Loading video ...</div>
-    <canvas id="streamdata" width="3000" height="3000">
+    <canvas id="streamdata" width="640" height="480">
         Your browser does not support the HTML5 canvas tag.
     </canvas>
     <script>
