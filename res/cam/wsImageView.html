@@ -38,10 +38,20 @@
                         }
                         // console.info(b64encoded);
                         var datajpg = "data:image/jpg;base64," + btoa(b64encoded);
-                        console.info(datajpg);
+                        // console.info(datajpg);
                         const img = new Image();
                         img.src = datajpg;
-                        img.onload = () => { ctx.drawImage(img, 0, 0); };
+                        img.onload = () => {
+                            wid = window.innerWidth;
+                            hei = window.innerHeight;
+                            iwid = this.width;
+                            ihei = this.height;
+                            scale = Math.min(wid/iwid, hei/ihei);
+                            console.log("scale: " + scale + " wid: " + wid + " hei: " + hei + " iwid: " + iwid + " ihei: " + ihei)
+                            ctx.canvas.width = iwid*scale;
+                            ctx.canvas.height = ihei*scale;
+                            ctx.drawImage(img, 0, 0, iwid*scale, ihei*scale); 
+                        };
                         // img.onload = () => { ctx.drawImage(img, 0, 0); };
                         // const imgData = ctx.createImageData(640, 480);
                         // const grayScale = new Uint8Array(640*480);
