@@ -79,7 +79,7 @@ void ImageWSListener::readMessage(const WebSocket& socket, v_uint8 opcode, p_cha
 
     auto wholeMessage = m_messageBuffer.toString();
     m_messageBuffer.setCurrentPosition(0);
-    OATPP_LOGD(TAG, "onMessage message='%s'", wholeMessage->c_str());
+    OATPP_LOGI(TAG, "onMessage message='%s'", wholeMessage->c_str());
 
   } else if(size > 0) { // message frame received
     m_messageBuffer.writeSimple(data, size);
