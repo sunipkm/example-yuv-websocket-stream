@@ -20,9 +20,15 @@ add_library(example-yuv-websocket-stream-lib
         src/backend/Utils.cpp
         src/dto/DTOs.hpp)
 
+add_library(libASICamera2 STATIC IMPORTED)
+add_library(libCameraUnit_ASI STATIC IMPORTED)
+
+set_target_properties(libASICamera2 PROPERTIES IMPORTED_LOCATION /usr/local/lib/libASICamera2.a)
+set_target_properties(libCameraUnit_ASI PROPERTIES IMPORTED_LOCATION /usr/local/lib/libCameraUnit_ASI.a)
+
 ## include directories
 
-target_include_directories(example-yuv-websocket-stream-lib PUBLIC src)
+target_include_directories(example-yuv-websocket-stream-lib PUBLIC src /usr/local/include)
 
 
 ## link libs
@@ -35,6 +41,10 @@ target_link_libraries(example-yuv-websocket-stream-lib
         PUBLIC oatpp::oatpp
         PUBLIC oatpp::oatpp-swagger
         PUBLIC oatpp::oatpp-websocket
+        PUBLIC libCameraUnit_ASI
+        PUBLIC libASICamera2
+        PUBLIC usb-1.0
+        PUBLIC cfitsio
 )
 
 ## define path to swagger-ui res folder

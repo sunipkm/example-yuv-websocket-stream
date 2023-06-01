@@ -6,6 +6,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <CameraUnit/CameraUnit.hpp>
 
 class V4LGrabber {
 
@@ -16,7 +17,7 @@ class V4LGrabber {
     IO_METHOD_USERPTR,
   };
 
-  V4LGrabber(const char* device, void(*imagecb)(void*, const void*, int), void* userdata, io_method iom = IO_METHOD_MMAP);
+  V4LGrabber(const char* device, void(*imagecb)(void*, const void*, int), void* userdata);
   ~V4LGrabber();
 
   int stop_capturing();
@@ -32,8 +33,7 @@ class V4LGrabber {
   };
 
   const char *m_devname;
-  enum io_method m_io = IO_METHOD_MMAP;
-  int m_fd = -1;
+  CCameraUnit *m_camera;
   struct buffer *m_buffers;
   unsigned int m_nbuffers;
   std::atomic_bool m_initdone;
@@ -44,18 +44,12 @@ class V4LGrabber {
   void (*m_imagecb)(void*, const void*,int);
   void *m_userdata;
 
-  static int xioctl(int fh, unsigned long int request, void *arg);
   static void mainloop(V4LGrabber *parent);
 
   int errno_report(const char *s);
-  int read_frame();
-  int uninit_device();
-  int init_read(unsigned int buffer_size);
-  int init_mmap();
-  int init_userp(unsigned int buffer_size);
+  int read_frame(CImageData data);
   int init_device();
   int stream_on();
-  int stream_off();
   int close_device();
   int open_device();
 
