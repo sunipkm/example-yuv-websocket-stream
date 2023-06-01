@@ -42,7 +42,7 @@
                         // console.info(datajpg);
                         var img = new Image();
                         img.src = datajpg;
-                        img.onload = () => { ctx.drawImage(img, 0, 0); };
+                        // img.onload = () => { ctx.drawImage(img, 0, 0); };
                         // const imgData = ctx.createImageData(640, 480);
                         // const grayScale = new Uint8Array(640*480);
                         // let i, j, g;
@@ -63,7 +63,7 @@
                         //     imgData.data[i + 6] = Math.min(255, Math.max(0, Math.floor(y2+1.7790*(u-128))));
                         //     imgData.data[i + 7] = 255;
                         // }
-                        // ctx.putImageData(imgData, 0, 0);
+                        ctx.putImageData(img, 0, 0);
                     }
                 };
 
