@@ -44,8 +44,8 @@
                         img.onload = () => {
                             wid = window.innerWidth;
                             hei = window.innerHeight;
-                            iwid = this.width;
-                            ihei = this.height;
+                            iwid = img.width;
+                            ihei = img.height;
                             scale = Math.min(wid/iwid, hei/ihei);
                             console.log("scale: " + scale + " wid: " + wid + " hei: " + hei + " iwid: " + iwid + " ihei: " + ihei)
                             ctx.canvas.width = iwid*scale;
