@@ -26,11 +26,12 @@
                     const received_msg = new Uint8Array(evt.data);
                     console.info("Received: " + received_msg.length + " bytes")
                     console.info(received_msg.slice(0, 10));
-
+                    
                     if(received_msg.length > 0 && stream === true) {
                         loadingMessage.hidden = true;
-
-                        var b64encoded = btoa(String.fromCharCode.apply(null, received_msg));
+                        
+                        var b64encoded = btoa(String.fromCharCode.apply(null, received_msg.slice(0, 10)));
+                        console.info(b64encoded);
                         var datajpg = "data:image/jpg;base64," + b64encoded;
                         c.src = datajpg;
                         // const imgData = ctx.createImageData(640, 480);
