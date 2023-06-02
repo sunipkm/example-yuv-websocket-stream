@@ -11,40 +11,39 @@ const char *apiv0::CamAPIController::TAGCam = "Cam";
 
 apiv0::CamAPIController::~CamAPIController()
 {
-  v4lDeinit();
+    v4lDeinit();
 }
 
 int apiv0::CamAPIController::v4lInit()
 {
-  m_imageReceivers = ImageWSRegistry::createShared();
-  char device[12] = "ZWO ASI";
+    m_imageReceivers = ImageWSRegistry::createShared();
+    char device[12] = "ZWO ASI";
 
-  if (V4LGrabber::testDevice("ZWO ASI") == 0)
-  {
-    
-  }
-  else
-  {
-    OATPP_LOGE(TAGCam, "No ZWO ASI devices are available");
-    return -1;
-  }
+    if (V4LGrabber::testDevice("ZWO ASI") == 0)
+    {
+    }
+    else
+    {
+        OATPP_LOGE(TAGCam, "No ZWO ASI devices are available");
+        return -1;
+    }
 
-  m_grabber = std::make_shared<V4LGrabber>("ZWO ASI", &CamAPIController::handle_frame, m_imageReceivers.get());
-  m_imagewsConnectionHandler = oatpp::websocket::ConnectionHandler::createShared();
-  m_imagewsConnectionHandler->setSocketInstanceListener(std::make_shared<ImageWSInstanceListener>(m_imageReceivers, m_grabber));
-  m_v4linit = true;
-  return 0;
+    m_grabber = std::make_shared<V4LGrabber>("ZWO ASI", &CamAPIController::handle_frame, m_imageReceivers.get());
+    m_imagewsConnectionHandler = oatpp::websocket::ConnectionHandler::createShared();
+    m_imagewsConnectionHandler->setSocketInstanceListener(std::make_shared<ImageWSInstanceListener>(m_imageReceivers, m_grabber));
+    m_v4linit = true;
+    return 0;
 }
 
 int apiv0::CamAPIController::v4lDeinit()
 {
-  m_grabber->stop_capturing();
-  m_imageReceivers.reset();
-  m_grabber.reset();
-  m_imagewsConnectionHandler->stop();
-  m_imagewsConnectionHandler.reset();
-  m_v4linit = false;
-  return 0;
+    m_grabber->stop_capturing();
+    m_imageReceivers.reset();
+    m_grabber.reset();
+    m_imagewsConnectionHandler->stop();
+    m_imagewsConnectionHandler.reset();
+    m_v4linit = false;
+    return 0;
 }
 
 /* *******************************
@@ -53,46 +52,66 @@ int apiv0::CamAPIController::v4lDeinit()
 
 void apiv0::CamAPIController::handle_frame(void *data, const void *image, int size)
 {
-  OATPP_LOGD("ImageStreamingWSController", "Handling Frame");
-  ImageWSRegistry *registry = (ImageWSRegistry *)data;
-  registry->distributeImage(image, size);
+    OATPP_LOGD("ImageStreamingWSController", "Handling Frame");
+    ImageWSRegistry *registry = (ImageWSRegistry *)data;
+    registry->distributeImage(image, size);
 }
 
 std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> apiv0::CamAPIController::stream()
 {
-
-  try
-  {
-    oatpp::String str = oatpp::String::loadFromFile(WWW_FOLDER "/cam/wsImageView.html");
-    auto rsp = createResponse(Status::CODE_200, str);
-    rsp->putHeader("Content-Type", "text/html; charset=utf-8");
-    return rsp;
-  }
-  catch (std::exception &e)
-  {
-    return createResponse(Status::CODE_505, "Error reading HTML-File");
-  }
+    static int count = 0;
+    OATPP_LOGI(TAGCam, "Serving file %s: %d req", (WWW_FOLDER "/cam/wsImageView.html"), ++count);
+    try
+    {
+        oatpp::String str = oatpp::String::loadFromFile(WWW_FOLDER "/cam/wsImageView.html");
+        auto rsp = createResponse(Status::CODE_200, str);
+        rsp->putHeader("Content-Type", "text/html; charset=utf-8");
+        return rsp;
+    }
+    catch (std::exception &e)
+    {
+        return createResponse(Status::CODE_505, "Error reading HTML-File");
+    }
 }
 
 std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> apiv0::CamAPIController::streamres(const oatpp::String &filename)
 {
-  try
-  {
-    oatpp::String filteredName(basename(filename->c_str()));
-    oatpp::String folderName(WWW_FOLDER "/cam/");
-    oatpp::String str = oatpp::String::loadFromFile((folderName + filteredName)->c_str());
-    auto rsp = createResponse(Status::CODE_200, str);
-    rsp->putHeader("Content-Type", Utils::guessMimeType(filteredName));
-    return rsp;
-  }
-  catch (std::exception &e)
-  {
-    return createResponse(Status::CODE_505, "Error reading HTML-File");
-  }
+    try
+    {
+        oatpp::String filteredName(basename(filename->c_str()));
+        oatpp::String folderName(WWW_FOLDER "/cam/");
+        OATPP_LOGI(__func__, "Serving file %s", (folderName + filteredName)->c_str());
+        oatpp::String str = oatpp::String::loadFromFile((folderName + filteredName)->c_str());
+        auto rsp = createResponse(Status::CODE_200, str);
+        rsp->putHeader("Content-Type", Utils::guessMimeType(filteredName));
+        return rsp;
+    }
+    catch (std::exception &e)
+    {
+        return createResponse(Status::CODE_505, "Error reading HTML-File");
+    }
+}
+
+std::shared_ptr<oatpp::web::protocol::http::outgoing::Response> apiv0::CamAPIController::rootrelative(const oatpp::String &filename)
+{
+    try
+    {
+        oatpp::String filteredName(basename(filename->c_str()));
+        oatpp::String folderName(WWW_FOLDER "/cam/");
+        OATPP_LOGI(__func__, "Serving file %s", (folderName + filteredName)->c_str());
+        oatpp::String str = oatpp::String::loadFromFile((folderName + filteredName)->c_str());
+        auto rsp = createResponse(Status::CODE_200, str);
+        rsp->putHeader("Content-Type", Utils::guessMimeType(filteredName));
+        return rsp;
+    }
+    catch (std::exception &e)
+    {
+        return createResponse(Status::CODE_505, "Error reading HTML-File");
+    }
 }
 
 const char *apiv0::CamAPIController::basename(const char *filename)
 {
-  const char *p = strrchr(filename, '/');
-  return p ? p + 1 : (const char *)filename;
+    const char *p = strrchr(filename, '/');
+    return p ? p + 1 : (const char *)filename;
 }
